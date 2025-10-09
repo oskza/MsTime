@@ -4,7 +4,7 @@ StopWatch::StopWatch() : _ms(0), _state(false) {}
 
 StopWatch::~StopWatch() {}
 
-uint32_t StopWatch::_getElapsedTime() {
+uint32_t StopWatch::getElapsedTime() {
     return (millis() - _ms);
 }
 
@@ -18,12 +18,12 @@ void StopWatch::start() {
 uint32_t StopWatch::stop() {
     if(!_state)
         return 0;
-    uint32_t res = _getElapsedTime();
+    uint32_t res = getElapsedTime();
     _ms = 0;
     _state = false;
     return res;
 }
 
 uint32_t StopWatch::lap() {
-    return (_state) ? _getElapsedTime() : 0;
+    return (_state) ? getElapsedTime() : 0;
 }

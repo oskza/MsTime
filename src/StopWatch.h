@@ -1,12 +1,12 @@
-#ifndef __STOPWATCH_H__
-#define __STOPWATCH_H__
+#ifndef STOPWATCH_H
+#define STOPWATCH_H
 #include <Arduino.h>
 
 class StopWatch {
     private:
         uint32_t _ms;
         bool _state;
-        uint32_t _getElapsedTime();
+        uint32_t getElapsedTime();
     public:
         StopWatch();
         virtual ~StopWatch();
