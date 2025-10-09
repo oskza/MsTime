@@ -6,7 +6,7 @@ refresh KEYWORD2
 reset   KEYWORD2
 start   KEYWORD2
 tick    KEYWORD2
-getState    KEYWORD2
+isRunning KEYWORD2
 setTimeout  KEYWORD2
 setNumRepeats   KEYWORD2
 attachExec  KEYWORD2
