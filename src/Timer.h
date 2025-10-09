@@ -18,7 +18,7 @@ class Timer {
         virtual void reset();
         virtual void start();
         virtual bool tick();
-        bool getState();
+        bool isRunning();
         void setTimeout(uint32_t timeout);
         void setNumRepeats(uint32_t num);
 };

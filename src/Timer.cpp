@@ -19,8 +19,8 @@ void Timer::reset() {
 
 void Timer::start() {
     state = true;
-    _ms = millis();
     _cnt = 0;
+    _ms = millis();
 }
 
 bool Timer::tick() {
@@ -29,8 +29,7 @@ bool Timer::tick() {
     uint32_t tm = millis();
     if(tm - _ms < _timeout)
         return false;
-    if(_numRepeats > 0
-            && ++_cnt >= _numRepeats) {
+    if(_numRepeats > 0 && ++_cnt >= _numRepeats) {
         Timer::reset();
         return true;
     }
@@ -38,10 +37,8 @@ bool Timer::tick() {
     return true;
 }
 
-bool Timer::getState() { return state; }
+bool Timer::isRunning() { return state; }
 
-void Timer::setTimeout(uint32_t timeout) {
-    _timeout = (timeout == 0) ? 5 : timeout;
-}
+void Timer::setTimeout(uint32_t timeout) { _timeout = (timeout == 0) ? 5 : timeout; }
 
 void Timer::setNumRepeats(uint32_t num) { _numRepeats = num; }
