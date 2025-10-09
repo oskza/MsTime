@@ -1,9 +1,7 @@
-# Class name
-Timer	KEYWORD1
+Timer KEYWORD1
 TaskTimer  KEYWORD1
 StopWatch	KEYWORD1
 
-# Methods
 refresh KEYWORD2
 reset   KEYWORD2
 start   KEYWORD2
