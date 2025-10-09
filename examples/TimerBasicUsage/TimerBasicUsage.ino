@@ -1,15 +1,19 @@
 #include <Timer.h>
 
-Timer timer(1000, 5);
+#define TIMEOUT_MS 1000
+
+Timer timer(TIMEOUT_MS);
 
 void setup() {
   Serial.begin(9600);
   delay(500);
+
   timer.start();
 }
 
 void loop() {
-  static uint8_t count = 0;
-  if(timer.tick())
-    Serial.println(++count);
+  if(timer.tick()) {
+    Serial.println("tick");
+    //...
+  }
 }

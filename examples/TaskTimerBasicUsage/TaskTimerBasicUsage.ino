@@ -1,19 +1,36 @@
 #include <TaskTimer.h>
 
-void onReset() { Serial.println("Reset"); }
+#define TIMEOUT_MS  1000
+#define NUM_REPEATS 5
+
+void onStart() { 
+  Serial.println("Start"); 
+  //...
+}
+
+void onReset() { 
+  Serial.println("Reset"); 
+  //...
+}
 
 TaskTimer timer(
-  1000,
-  [](){ Serial.println("Exec"); },
-  [](){ Serial.println("Start"); },
+  TIMEOUT_MS,
+  [](){ 
+    Serial.println("Exec"); 
+    //...
+  },
+  onStart,
   onReset,
-  5
+  NUM_REPEATS
 );
 
 void setup() {
   Serial.begin(9600);
   delay(500);
+  
   timer.start();
 }
 
-void loop() { timer.tick(); }
+void loop() { 
+  timer.tick();
+}

@@ -4,20 +4,22 @@ void setup() {
     Serial.begin(9600);
     delay(500);
 
-    Serial.println("Starting stopwatch...");
-
     StopWatch stopwatch;
 
+    Serial.println("Starting stopwatch...");
     stopwatch.start();
+
+    Serial.println("Waiting 1 sec...");
     delay(1000);
 
     uint32_t lap = stopwatch.lap();
-    delay(1000);
+    Serial.print("Lap: "); Serial.print(lap); Serial.println(" ms");
+
+    Serial.println("Waiting 2 sec...");
+    delay(2000);
 
     uint32_t total = stopwatch.stop();
-
-    Serial.print("Lap: "); Serial.println(lap);
-    Serial.print("Total:  "); Serial.println(total);
+    Serial.print("Total:  "); Serial.print(total); Serial.println(" ms");
 }
 
 void loop() {}
