@@ -1,5 +1,5 @@
-#ifndef __TASK_TIMER_H__
-#define __TASK_TIMER_H__
+#ifndef TASK_TIMER_H
+#define TASK_TIMER_H
 #include "Timer.h"
 
 class TaskTimer : public Timer {
