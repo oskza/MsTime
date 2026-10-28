@@ -1,25 +1,27 @@
-#ifndef TIMER_H
-#define TIMER_H
-#include <Arduino.h>
+#ifndef MSTIME_TIMER_H
+#define MSTIME_TIMER_H
+#include <stdint.h>
 
 class Timer {
 private:
-    uint32_t _timeout;
-    uint32_t _numRepeats;
-    uint32_t _ms;
-    uint32_t _cnt;
+    uint32_t _intervalMs;
+    uint32_t _repeatLimit;
+    uint32_t _referenceMs;
+    uint32_t _completedRepeats;
 protected:
-    bool state;
+    bool running;
 public:
     Timer();
     Timer(uint32_t timeout, uint32_t numRepeats = 0);
-    virtual ~Timer();
-    void refresh();
-    virtual void reset();
-    virtual void start();
-    virtual bool tick();
-    bool isRunning();
-    void setTimeout(uint32_t timeout);
-    void setNumRepeats(uint32_t num);
+    virtual ~Timer() = default;
+    virtual void start(uint32_t nowMs);
+    virtual void stop();
+    void reset(uint32_t nowMs);
+    virtual bool poll(uint32_t nowMs);
+    bool isRunning() const;
+    bool hasElapsed(uint32_t nowMs, uint32_t durationMs) const;
+    uint32_t getElapsedTime(uint32_t nowMs) const;
+    void setIntervalMs(uint32_t ms);
+    void setRepeatLimit(uint32_t limit);
 };
 #endif

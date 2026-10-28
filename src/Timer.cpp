@@ -1,44 +1,53 @@
 #include "Timer.h"
 
-Timer::Timer() : _timeout(5), _numRepeats(0), _ms(0), _cnt(0), state(false) {}
+Timer::Timer() 
+    : _intervalMs(5), 
+    _repeatLimit(0), 
+    _referenceMs(0), 
+    _completedRepeats(0), 
+    running(false) {}
 
 Timer::Timer(uint32_t timeout, uint32_t numRepeats)
-                : _numRepeats(numRepeats), _ms(0), _cnt(0), state(false) { 
-    setTimeout(timeout); 
+        : _repeatLimit(numRepeats), 
+        _referenceMs(0), 
+        _completedRepeats(0), 
+        running(false) { 
+    setIntervalMs(timeout); 
 }
 
-Timer::~Timer() {}
-
-void Timer::refresh() { if(state) _ms = millis(); }
-
-void Timer::reset() {
-    state = false;
-    _ms = 0;
-    _cnt = 0;
+void Timer::stop() {
+    running = false;
+    _referenceMs = 0;
+    _completedRepeats = 0;
 }
 
-void Timer::start() {
-    state = true;
-    _cnt = 0;
-    _ms = millis();
+void Timer::start(uint32_t nowMs) {
+    running = true;
+    _referenceMs = nowMs;
+    _completedRepeats = 0;
 }
 
-bool Timer::tick() {
-    if(!state)
+void Timer::reset(uint32_t nowMs) { _referenceMs = nowMs; }
+
+bool Timer::isRunning() const { return running; }
+
+uint32_t Timer::getElapsedTime(uint32_t nowMs) const { return nowMs - _referenceMs; }
+
+bool Timer::hasElapsed(uint32_t nowMs, uint32_t durationMs) const {
+    return running && getElapsedTime(nowMs) >= durationMs;
+}
+
+bool Timer::poll(uint32_t nowMs) {
+    if (!hasElapsed(nowMs, _intervalMs))
         return false;
-    uint32_t tm = millis();
-    if(tm - _ms < _timeout)
-        return false;
-    if(_numRepeats > 0 && ++_cnt >= _numRepeats) {
-        Timer::reset();
+    if (_repeatLimit > 0 && ++_completedRepeats >= _repeatLimit) {
+        Timer::stop();
         return true;
     }
-    _ms = tm;
+    reset(nowMs);
     return true;
 }
 
-bool Timer::isRunning() { return state; }
+void Timer::setIntervalMs(uint32_t ms) { _intervalMs = (ms == 0) ? 5 : ms; }
 
-void Timer::setTimeout(uint32_t timeout) { _timeout = (timeout == 0) ? 5 : timeout; }
-
-void Timer::setNumRepeats(uint32_t num) { _numRepeats = num; }
+void Timer::setRepeatLimit(uint32_t limit) { _repeatLimit = limit; }

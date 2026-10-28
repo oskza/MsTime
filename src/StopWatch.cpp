@@ -1,27 +1,25 @@
 #include "StopWatch.h"
 
-StopWatch::StopWatch() : _ms(0), _state(false) {}
+StopWatch::StopWatch() : _referenceMs(0), running(false) {}
 
-StopWatch::~StopWatch() {}
+uint32_t StopWatch::getElapsedTime(uint32_t nowMs) const { return nowMs - _referenceMs; }
 
-uint32_t StopWatch::getElapsedTime() { return millis() - _ms; }
-
-bool StopWatch::isRunning() { return _state; }
-
-void StopWatch::start() {
-    if(_state)
+void StopWatch::start(uint32_t nowMs) {
+    if(running)
         return;
-    _state = true;
-    _ms = millis();
+    running = true;
+    _referenceMs = nowMs;
 }
 
-uint32_t StopWatch::stop() {
-    if(!_state)
+uint32_t StopWatch::stop(uint32_t nowMs) {
+    if(!running)
         return 0;
-    uint32_t tm = getElapsedTime();
-    _ms = 0;
-    _state = false;
-    return tm;
+    uint32_t elapsedMs = getElapsedTime(nowMs);
+    _referenceMs = 0;
+    running = false;
+    return elapsedMs;
 }
 
-uint32_t StopWatch::lap() { return _state ? getElapsedTime() : 0; }
+uint32_t StopWatch::lap(uint32_t nowMs) const { return running ? getElapsedTime(nowMs) : 0; }
+
+bool StopWatch::isRunning() const { return running; }
